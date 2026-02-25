@@ -1,0 +1,23 @@
+.conda
+
+# JetBrains IDEs project files
+.idea/
+*.iml
+
+# Gradle
+.gradle/
+build/
+
+# Maven
+target/
+
+# SBT
+project/target/
+target/
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# macOS
+.DS_Store
