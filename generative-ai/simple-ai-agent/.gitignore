@@ -1,2 +1,15 @@
 __pycache__/
 .conda
+
+# uv
+.venv/
+.python-version
+
+# Environment
+.env
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
