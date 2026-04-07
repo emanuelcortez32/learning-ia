@@ -1,13 +1,12 @@
 from fastapi import FastAPI
-from dotenv import load_dotenv
 from controllers.health_controller import router as health_router
 from controllers.chat_controller import router as chat_router
+from config.config import config
 
-load_dotenv()
 
 app = FastAPI(
-    title="AI Agent API", 
-    version="1.0.0"
+    title=config.app_name, 
+    version=config.app_version
 )
 
 app.include_router(health_router, prefix="/health", tags=["Health"])
@@ -20,4 +19,4 @@ async def root():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    uvicorn.run(app, host=config.host, port=config.port)

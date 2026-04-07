@@ -13,3 +13,8 @@ __pycache__/
 .idea/
 *.swp
 *.swo
+
+# Pytest
+htmlcov
+.pytest_cache/
+.coverage
