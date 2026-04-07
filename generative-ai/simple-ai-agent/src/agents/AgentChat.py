@@ -16,4 +16,4 @@ class AgentChat(BaseAgent):
         return self._chain.invoke({"query": query})
     
     def stream(self, query: str):
-        return self._chain.stream({"qyery": query})
+        return self._chain.stream({"query": query})

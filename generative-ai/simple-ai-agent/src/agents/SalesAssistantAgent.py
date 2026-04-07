@@ -1,10 +1,5 @@
-from dotenv import load_dotenv
-
 from agents.AgentChat import AgentChat
 from langchain_ollama import ChatOllama
-
-
-load_dotenv()
 
 SYSTEM_PROMPT = """
     You are a friendly and knowledgeable clothing sales assistant.
@@ -25,13 +20,4 @@ model = ChatOllama(
     temperature=0.3
 )
 
-agent = AgentChat(system_prompt=SYSTEM_PROMPT, model=model)
-
-
-while True:
-    query = input("Human: ")
-    if(query == "q" or query == "exit"):
-        exit(0)
-
-    response = agent.chat(query)
-    print(response.content)
+sales_assistant = AgentChat(system_prompt=SYSTEM_PROMPT, model=model)
