@@ -1,4 +1,4 @@
-from agents.AgentChat import AgentChat
+from lib.ai.agent.AgentChat import AgentChat
 from langchain_ollama import ChatOllama
 
 SYSTEM_PROMPT = """
