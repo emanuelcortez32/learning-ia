@@ -1,20 +1,19 @@
 version: '3.8'
 services:
   ollama:
-    image: ollama/ollama:0.14.3
+    image: ollama/ollama:0.20.3
     container_name: ollama
+    env_file:
+      - .env
     environment:
-      - OLLAMA_NUM_PARALLEL=4
-      - OLLAMA_MAX_LOADED_MODELS=3
+      - OLLAMA_NUM_PARALLEL=${OLLAMA_NUM_PARALLEL:-2}
+      - OLLAMA_MAX_LOADED_MODELS=${OLLAMA_MAX_LOADED_MODELS:-1}
+      - LLM_MODEL=${LLM_MODEL:-llama3.2:3b}
     ports:
       - "11434:11434"
     volumes:
-      - ollama_data:/root/.ollama
-    entrypoint: ["/bin/bash", "-c", "\
-      ollama serve & \
-      sleep 5 && \
-      ollama pull llama3.1:8b && \
-      wait"]
+      - ollama_volume:/root/.ollama
+    entrypoint: ["/bin/bash", "-c", "ollama serve & sleep 5 && ollama pull $$LLM_MODEL && wait"]
     # Configuration to use the GPU Nvidia
     #deploy:
     #  resources:
@@ -23,28 +22,30 @@ services:
     #        - driver: nvidia
     #          count: all # Use all available GPUs
     #          capabilities: [gpu]
-    # restart: always # Para que se reinicie automáticamente
+    restart: unless-stopped
     networks:
       - ollama-network
 
-  #open-webui:
-  #  image: ghcr.io/open-webui/open-webui:main
-  #  container_name: open-webui
-  #  ports:
-  #    - "3000:8080"
-  #  volumes:
-  #    - openwebui_data:/app/backend/data
-  #  environment:
-  #    - OLLAMA_BASE_URL=http://ollama:11434
-  #  depends_on:
-  #    - ollama
-  #  networks:
-  #    - ollama-network
-    # restart: always
+  open-webui:
+    image: ghcr.io/open-webui/open-webui:main
+    container_name: open-webui
+    ports:
+      - "3000:8080"
+    volumes:
+      - openwebui_volume:/app/backend/data
+    env_file:
+      - .env
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+    depends_on:
+      - ollama
+    networks:
+      - ollama-network
+    restart: unless-stopped
 
 volumes:
-  ollama_data:
-  openwebui_data:
+  ollama_volume:
+  openwebui_volume:
 
 networks:
   ollama-network:

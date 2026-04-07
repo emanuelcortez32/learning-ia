@@ -1,4 +1,6 @@
-langchain==1.2.6
+langchain==1.2.10
 langchain-community==0.3.31
 langchain-ollama==1.0.1
 fastapi[standard]==0.128.0
+pydantic==2.12.5
+python-dotenv==1.2.2

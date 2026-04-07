@@ -1,21 +1,37 @@
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import StrOutputParser
+from dotenv import load_dotenv
+
+from agents.AgentChat import AgentChat
 from langchain_ollama import ChatOllama
 
-prompt = ChatPromptTemplate.from_messages([
-    "system", "You are a helpful assistant. Answer the user's question concisely.",
-    "human", "{question}"
-])
 
-model = "llama3.1:8b"
-llm = ChatOllama(
-    model=model,
+load_dotenv()
+
+SYSTEM_PROMPT = """
+    You are a friendly and knowledgeable clothing sales assistant.
+    Your role is to help users find the perfect clothing items based on their needs, preferences, and style. 
+    Always be polite, encouraging, and patient. Ask questions to better understand the user's preferences (e.g., occasion, size, color, style) 
+    and provide personalized recommendations based at the context provided. 
+    If the user needs help with sizing or finding the right fit, guide them through the process. 
+    Your goal is to ensure the user has a pleasant shopping experience and leaves feeling confident about their choice.
+
+    If the user question for any topic unrelated with clothes, just response you can't answers that.
+"""
+
+LLM_MODEL = "llama3.2:3b"
+
+model = ChatOllama(
+    model=LLM_MODEL,
     base_url="http://localhost:11434",
     temperature=0.3
 )
 
-output_parser = StrOutputParser()
-chain = prompt | llm | output_parser
+agent = AgentChat(system_prompt=SYSTEM_PROMPT, model=model)
 
-response = chain.invoke({"question": "Dime que es la velocidad"})
-print(response)
+
+while True:
+    query = input("Human: ")
+    if(query == "q" or query == "exit"):
+        exit(0)
+
+    response = agent.chat(query)
+    print(response.content)
