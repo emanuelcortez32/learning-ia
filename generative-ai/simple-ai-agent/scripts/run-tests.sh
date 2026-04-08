@@ -1,8 +1,6 @@
 #!/bin/bash
 # Run pytest test suite
 
-cd "$(dirname "$0")"
-
 echo "Running pytest test suite..."
 echo ""
 
