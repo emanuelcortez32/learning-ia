@@ -1,0 +1,8 @@
+{
+    "mcpServers": {
+        "simple-mcp": {
+            "type": "streamable-http",
+            "url": "http://simple-mcp-server:8088/mcp"
+        }
+    }
+}

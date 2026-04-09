@@ -1,0 +1,105 @@
+services:
+  simple-mcp-server:
+    container_name: simple-mcp-server
+    build:
+      context: .
+      dockerfile: Dockerfile
+    env_file:
+      - .env
+    ports:
+      - "8088:8088"
+      - "8089:8089"
+    networks:
+      - simple-mcp-server-network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8088/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    restart: unless-stopped
+
+  mcp-inspector:
+    container_name: mpc-inspector
+    image: ghcr.io/modelcontextprotocol/inspector:latest
+    depends_on:
+      simple-mcp-server:
+        condition: service_healthy
+    env_file:
+      - .env
+    environment:
+      - HOST=0.0.0.0
+      - CLIENT_PORT=6789
+      - SERVER_PORT=6790
+      - MCP_AUTO_OPEN_ENABLED=false
+      - ALLOWED_ORIGINS=http://localhost:6789,http://0.0.0.0:6789
+      - DANGEROUSLY_OMIT_AUTH=true
+    ports:
+      - "6789:6789"
+      - "6790:6790"
+    networks:
+      - simple-mcp-server-network
+    restart: unless-stopped
+
+  mcpo:
+    container_name: mcpo
+    image: ghcr.io/open-webui/mcpo:main-slim
+    depends_on:
+      simple-mcp-server:
+        condition: service_healthy
+    env_file:
+      - .env
+    ports:
+      - "8000:8000"
+    networks:
+      - simple-mcp-server-network
+    command: --config /app/config/config.json --hot-reload
+    volumes:
+      - ./mcpo.config.json:/app/config/config.json
+    restart: unless-stopped
+
+  ollama:
+    container_name: ollama
+    image: ollama/ollama:0.20.3
+    env_file:
+      - .env
+    environment:
+      - OLLAMA_NUM_PARALLEL=2
+      - OLLAMA_MAX_LOADED_MODELS=1
+      - LLM_MODEL=llama3.2:1b
+    ports:
+      - "11434:11434"
+    networks:
+      - simple-mcp-server-network
+    entrypoint: ["/bin/bash", "-c", "ollama serve & sleep 5 && ollama pull $${LLM_MODEL} && wait"]
+    volumes:
+      - ollama_volume:/root/.ollama
+    restart: unless-stopped
+
+  open-webui:
+    container_name: open-webui
+    image: ghcr.io/open-webui/open-webui:main-slim
+    depends_on:
+      - ollama
+    env_file:
+      - .env
+    environment:
+      - OLLAMA_BASE_URL=http://ollama:11434
+      - WEBUI_AUTH=False
+    ports:
+      - "3000:8080"
+    networks:
+      - simple-mcp-server-network
+    volumes:
+      - openwebui_volume:/app/backend/data
+    restart: unless-stopped
+
+
+networks:
+  simple-mcp-server-network:
+    name: simple-mcp-server-network
+    driver: bridge
+
+volumes:
+  ollama_volume:
+  openwebui_volume:
