@@ -40,7 +40,7 @@ services:
     networks:
       - simple-mcp-server-network
     volumes:
-      - ./mcpo.config.json:/app/config/config.json
+      - ./mcp.json:/app/config/config.json
     restart: unless-stopped
 
   mcpo:
@@ -57,7 +57,7 @@ services:
       - simple-mcp-server-network
     command: --config /app/config/config.json --hot-reload
     volumes:
-      - ./mcpo.config.json:/app/config/config.json
+      - ./mcp.json:/app/config/config.json
     restart: unless-stopped
 
   ollama:

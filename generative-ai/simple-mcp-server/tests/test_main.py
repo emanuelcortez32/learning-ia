@@ -9,7 +9,7 @@ MAIN_PATH = Path(__file__).resolve().parents[1] / "src" / "main.py"
 
 
 def _build_fake_modules():
-    calls = {"health": 0, "hello": 0}
+    calls = {"health": 0, "hello": 0, "prompt": 0, "resource": 0}
 
     class FakeMCP:
         def __init__(self, name):
@@ -19,6 +19,21 @@ def _build_fake_modules():
         def run_http_async(self, **kwargs):
             self.run_http_calls.append(kwargs)
             return "RUN_HTTP_ASYNC_RETURN"
+
+        @property
+        def prompt(self):
+            def decorator(func):
+                calls["prompt"] += 1
+                return func
+
+            return decorator
+
+        def resource(self, _uri):
+            def decorator(func):
+                calls["resource"] += 1
+                return func
+
+            return decorator
 
     fake_fastmcp = types.ModuleType("fastmcp")
     fake_fastmcp.FastMCP = FakeMCP
@@ -58,7 +73,7 @@ def test_main_initialization_registers_routes_and_tools(monkeypatch):
 
     assert isinstance(module.mcp, FakeMCP)
     assert module.mcp.name == "simple-mcp-server"
-    assert calls == {"health": 1, "hello": 1}
+    assert calls == {"health": 1, "hello": 1, "prompt": 1, "resource": 1}
 
 
 def test_main_executes_http_server_when_run_as_script(monkeypatch):
@@ -76,5 +91,5 @@ def test_main_executes_http_server_when_run_as_script(monkeypatch):
 
     runpy.run_path(str(MAIN_PATH), run_name="__main__")
 
-    assert calls == {"health": 1, "hello": 1}
+    assert calls == {"health": 1, "hello": 1, "prompt": 1, "resource": 1}
     assert asyncio_calls["arg"] == "RUN_HTTP_ASYNC_RETURN"
