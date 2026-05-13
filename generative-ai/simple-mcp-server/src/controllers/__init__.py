@@ -1,0 +1,1 @@
+from .health_controller import register_health_controller

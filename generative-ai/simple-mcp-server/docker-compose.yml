@@ -20,7 +20,7 @@ services:
     restart: unless-stopped
 
   mcp-inspector:
-    container_name: mpc-inspector
+    container_name: simple-mcp-server-mpc-inspector
     image: ghcr.io/modelcontextprotocol/inspector:latest
     depends_on:
       simple-mcp-server:
@@ -39,10 +39,12 @@ services:
       - "6790:6790"
     networks:
       - simple-mcp-server-network
+    volumes:
+      - ./mcpo.config.json:/app/config/config.json
     restart: unless-stopped
 
   mcpo:
-    container_name: mcpo
+    container_name: simple-mcp-server-mcpo
     image: ghcr.io/open-webui/mcpo:main-slim
     depends_on:
       simple-mcp-server:
@@ -59,7 +61,7 @@ services:
     restart: unless-stopped
 
   ollama:
-    container_name: ollama
+    container_name: simple-mcp-server-ollama
     image: ollama/ollama:0.20.3
     env_file:
       - .env
@@ -77,7 +79,7 @@ services:
     restart: unless-stopped
 
   open-webui:
-    container_name: open-webui
+    container_name: simple-mcp-server-open-webui
     image: ghcr.io/open-webui/open-webui:main-slim
     depends_on:
       - ollama

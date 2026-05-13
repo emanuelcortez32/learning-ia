@@ -1,9 +1,9 @@
 #!/bin/bash
-# Setup script for the AI Agent project
+# Setup script for the Simple MCP project
 
 set -e
 
-echo "🚀 Setting up Simple AI Agent..."
+echo "🚀 Setting up Simple MCP Agent..."
 echo ""
 
 # Check if uv is installed

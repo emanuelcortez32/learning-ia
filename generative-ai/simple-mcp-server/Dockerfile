@@ -1,7 +1,7 @@
 # ---------- Builder ----------
 FROM python:3.12-slim AS builder
 
-WORKDIR /server
+WORKDIR /app
 
 RUN pip install uv
 
@@ -18,20 +18,20 @@ RUN apt-get update && apt-get install -y \
 
 RUN useradd --create-home --shell /bin/bash --uid 1001 appuser
 
-WORKDIR /server
+WORKDIR /app
 
-COPY --from=builder /server/.venv /server/.venv
+COPY --from=builder /app/.venv /app/.venv
 COPY src/ .
 
 COPY pyproject.toml uv.lock ./
 
-RUN chown -R appuser:appuser /server
+RUN chown -R appuser:appuser /app
 
 USER appuser
 
-ENV PATH="/server/.venv/bin:$PATH"
-ENV PYTHONPATH="/server"
+ENV PATH="/app/.venv/bin:$PATH"
+ENV PYTHONPATH="/app"
 
 EXPOSE 8088
 
-CMD ["python", "server.py"]
+CMD ["python", "main.py"]
