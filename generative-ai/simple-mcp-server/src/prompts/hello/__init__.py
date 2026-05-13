@@ -1,0 +1,1 @@
+from .generate_cool_greetings import register_generate_cool_greetings_prompt

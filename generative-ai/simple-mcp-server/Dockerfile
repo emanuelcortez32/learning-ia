@@ -5,7 +5,7 @@ WORKDIR /app
 
 RUN pip install uv
 
-COPY pyproject.toml uv.lock ./
+COPY README.md pyproject.toml uv.lock ./
 
 RUN uv sync --frozen --no-dev
 
@@ -22,8 +22,7 @@ WORKDIR /app
 
 COPY --from=builder /app/.venv /app/.venv
 COPY src/ .
-
-COPY pyproject.toml uv.lock ./
+COPY README.md pyproject.toml uv.lock ./
 
 RUN chown -R appuser:appuser /app
 

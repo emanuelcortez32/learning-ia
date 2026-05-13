@@ -1,0 +1,1 @@
+from .get_greeting import register_get_greeting_resource
