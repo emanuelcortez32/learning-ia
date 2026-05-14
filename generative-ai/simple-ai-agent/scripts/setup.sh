@@ -1,5 +1,5 @@
 #!/bin/bash
-# Setup script for the AI Agent project
+# Setup script for the Simple MCP project
 
 set -e
 

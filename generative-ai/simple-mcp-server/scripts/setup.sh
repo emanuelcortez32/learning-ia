@@ -3,7 +3,7 @@
 
 set -e
 
-echo "🚀 Setting up Simple MCP Agent..."
+echo "🚀 Setting up Simple MCP Server..."
 echo ""
 
 # Check if uv is installed

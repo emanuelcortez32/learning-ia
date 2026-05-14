@@ -4,6 +4,10 @@ version = "1.0.0"
 description = "AI Agent API with FastAPI and LangChain"
 readme = "README.md"
 requires-python = ">=3.10"
+authors = [
+    { name="Emanuel Cortez", email="emanuelcortez32@gmail.com" }
+]
+
 dependencies = [
     "langchain==1.2.10",
     "langchain-community==0.3.31",
@@ -15,11 +19,15 @@ dependencies = [
 ]
 
 [build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
 
-[tool.uv]
-dev-dependencies = [
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+[dependency-groups]
+dev = [
     "pytest>=8.0.0",
     "pytest-asyncio>=0.23.0",
     "pytest-cov>=5.0.0"
@@ -28,4 +36,4 @@ dev-dependencies = [
 [tool.pytest_env]
 
 [tool.hatch.build.targets.wheel]
-packages = ["src"]
+packages = ["src*"]
