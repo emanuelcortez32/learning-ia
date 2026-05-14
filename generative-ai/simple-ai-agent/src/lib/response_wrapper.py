@@ -1,4 +1,4 @@
-from models.ChatResponseModel import ChatResponseModel
+from models import ChatResponseModel
 from langchain_core.messages.ai import AIMessage
 
 def api_response(data: AIMessage | None=None, message="Success", status=True, error=None):

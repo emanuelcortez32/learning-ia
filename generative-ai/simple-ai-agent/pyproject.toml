@@ -9,13 +9,17 @@ authors = [
 ]
 
 dependencies = [
+    "fastapi[standard]==0.128.0",
     "langchain==1.2.10",
+    "langchain-core==1.2.11",
     "langchain-community==0.3.31",
     "langchain-ollama==1.0.1",
-    "fastapi[standard]==0.128.0",
+    "langgraph==1.0.8",
+    "langgraph-prebuilt==1.0.7",
     "pydantic==2.12.5",
     "pydantic-settings>=2.10.1",
     "python-dotenv==1.2.2",
+    "wikipedia==1.4.0"
 ]
 
 [build-system]

@@ -1,8 +1,7 @@
 from fastapi import FastAPI
-from controllers.health_controller import router as health_router
-from controllers.chat_controller import router as chat_router
-from config.config import config
-
+from controllers import health_router
+from controllers import chat_router
+from config import config
 
 app = FastAPI(
     title=config.app_name, 

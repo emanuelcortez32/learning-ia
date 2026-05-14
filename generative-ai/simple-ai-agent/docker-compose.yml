@@ -2,7 +2,7 @@ version: '3.8'
 services:
   ollama:
     image: ollama/ollama:0.20.3
-    container_name: ollama
+    container_name: ollama-simple-ai-agent
     env_file:
       - .env
     environment:
@@ -25,23 +25,6 @@ services:
     restart: unless-stopped
     networks:
       - ollama-network
-
-  open-webui:
-    image: ghcr.io/open-webui/open-webui:main
-    container_name: open-webui
-    ports:
-      - "3000:8080"
-    volumes:
-      - openwebui_volume:/app/backend/data
-    env_file:
-      - .env
-    environment:
-      - OLLAMA_BASE_URL=http://ollama:11434
-    depends_on:
-      - ollama
-    networks:
-      - ollama-network
-    restart: unless-stopped
 
 volumes:
   ollama_volume:
