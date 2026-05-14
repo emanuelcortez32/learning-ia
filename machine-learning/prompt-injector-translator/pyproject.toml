@@ -1,0 +1,33 @@
+[project]
+name = "prompt-injector-translator"
+version = "1.0.0"
+description = "Prompt Injector Translator"
+requires-python = ">=3.11"
+authors = [
+    { name = "Emanuel Cortez", email = "emanuelcortez32@gmail.com" }
+]
+dependencies = [
+    "huggingface-hub==1.4.1",
+    "ipykernel==7.1.0",
+    "matplotlib==3.10.8",
+    "numpy==2.4.2",
+    "pandas==2.3.3",
+    "pyarrow==23.0.1",
+    "scikit-learn==1.8.0",
+    "sentencepiece==0.2.1",
+    "torch==2.10.0",
+    "tqdm==4.67.3",
+    "transformers==5.2.0",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["."]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]

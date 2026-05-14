@@ -1,0 +1,32 @@
+[project]
+name = "ml-logistic-regression"
+version = "1.0.0"
+description = "LogisticRegression"
+requires-python = ">=3.11"
+authors = [
+    { name = "Emanuel Cortez", email = "emanuelcortez32@gmail.com" }
+]
+dependencies = [
+    "fsspec==2025.12.0",
+    "huggingface-hub==1.2.3",
+    "ipykernel==7.1.0",
+    "ipywidgets==8.1.8",
+    "joblib==1.5.3",
+    "matplotlib==3.10.8",
+    "pandas==2.3.3",
+    "scikit-learn==1.8.0",
+    "seaborn==0.13.2",
+    "skl2onnx==1.19.1",
+]
+
+[build-system]
+requires = ["setuptools>=45", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["."]
+
+
+[tool.hatch.build.targets.wheel]
+packages = ["."]
