@@ -1,23 +1,57 @@
+# Python
+__pycache__/
+.venv/
+.python-version
+.env
+.pytest_cache/
+.coverage
+htmlcov
+*.egg-info/
+dist/
+logs/
 .conda
 
-# JetBrains IDEs project files
+# Editors and IDEs
 .idea/
+.vscode/
 *.iml
+*.iws
+*.ipr
+*.swp
+*.swo
 
-# Gradle
+# Java build tools
 .gradle/
 build/
-
-# Maven
 target/
-
-# SBT
 project/target/
-target/
 
-# Windows
+# Eclipse / STS
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# NetBeans
+nbproject/private/
+nbbuild/
+nbdist/
+.nb-gradle/
+
+# Project-specific ignores
+/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/HELP.md
+/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/.mvn/wrapper/maven-wrapper.jar
+
+# Keep nested build outputs tracked for the Java sample project
+!/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/src/main/**/target/
+!/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/src/test/**/target/
+!/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/src/main/**/build/
+!/machine-learning/ml-linear-regression/implementations/java/abalone-age-prediction/src/test/**/build/
+
+# OS artifacts
 Thumbs.db
 Desktop.ini
-
-# macOS
 .DS_Store
