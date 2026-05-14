@@ -37,7 +37,7 @@ class AgentChat(BaseModel):
             system_prompt=self.system_prompt,
             response_format=response_format)
 
-    def chat(self, query: str):
+    def chat(self, query: str) -> AIMessage:
         result = self._agent.invoke(
             {"messages": [HumanMessage(query)]}
         )
@@ -47,39 +47,42 @@ class AgentChat(BaseModel):
             None
         )
 
-        if last_ai_message:
-            return last_ai_message
+        if not last_ai_message:
+            raise ValueError("No AI response generated")
+
+        return last_ai_message
     
     def stream(self, query: str):
         
         async def generate():
-
-            for chunk in self._agent.stream(
+            full_response = ""
+            async for chunk in self._agent.astream(
                 { "messages": [HumanMessage(query)]}, 
-                stream_mode="values"
+                stream_mode="messages"
             ):
-    
-                latest_message = chunk["messages"][-1]
+                msg, _ = chunk
 
-                if latest_message.content:
-                    if isinstance(latest_message, HumanMessage):
-                        logger.info(f"User: {latest_message.content}")
+                if msg.content:
+                    if isinstance(msg, HumanMessage):
+                        logger.info(f"User: {msg.content}")
 
-                    elif isinstance(latest_message, AIMessage):
-                        logger.info(f"Agent: {latest_message.content}")
+                    elif isinstance(msg, AIMessage):
+                        full_response += msg.content
                         yield f"data: {json.dumps({
                             'type': 'content',
-                            'content': latest_message.content
+                            'content': msg.content
                         })}\n\n"
 
-                elif latest_message.tool_calls:
-                    tool_names = [tc["name"] for tc in latest_message.tool_calls]
+                elif msg.tool_calls:
+                    tool_names = [tc["name"] for tc in msg.tool_calls]
 
                     logger.info(f"Calling tools: {tool_names}")
                     yield f"data: {json.dumps({
                         'type': 'tool_call',
                         'tools': tool_names
                     })}\n\n"
+
+            logger.info(f"Agent: {full_response}")
 
             yield "data: [DONE]\n\n"
 

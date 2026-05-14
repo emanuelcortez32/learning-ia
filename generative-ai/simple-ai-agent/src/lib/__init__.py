@@ -1,1 +1,1 @@
-from .response_wrapper import api_response
+from .response_wrapper import transform_ai_message_to_api_response
